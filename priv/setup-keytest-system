@@ -1,0 +1,35 @@
+#!/bin/bash
+
+BASE=/var/tmp/cb-uuid-system
+
+mkdir $BASE
+cd $BASE
+
+# clone CB
+git clone git://github.com/evanmiller/ChicagoBoss.git
+ln -s ChicagoBoss CB
+
+# clone the forked boss_db
+cd CB
+mkdir deps
+cd deps
+git clone git://github.com/kevinmontuori/boss_db.git
+cd boss_db
+git checkout explicit-keytype-2
+
+# build 'er up.
+cd $BASE/CB
+make
+
+# the keytest app
+cd $BASE
+git clone git://github.com/kevinmontuori/cb-keytest.git keytest
+
+# assuming the user can psql as a superuser without creds:
+cd $BASE/keytest
+psql --file=priv/setup-pgsql-db.sql
+
+# setup the test schema
+export PGPASSWORD=keytest_pass
+psql --file=priv/keytest-schema.sql --username=keytest_user --dbname=keytest_db 
+

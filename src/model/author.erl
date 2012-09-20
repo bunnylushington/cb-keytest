@@ -1,0 +1,3 @@
+-module(author, [Id::uuid(), FirstName, LastName]).
+-has({books, many}).
+-compile(export_all).

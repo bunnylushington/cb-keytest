@@ -1,0 +1,3 @@
+-module(hacker, [Id, Githubid]).
+-has({projects, many}).
+-compile(export_all).

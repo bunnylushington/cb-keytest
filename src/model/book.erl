@@ -1,0 +1,3 @@
+-module(book, [Id::uuid(), Title, AuthorId]).
+-belongs_to(author).
+-compile(export_all).
